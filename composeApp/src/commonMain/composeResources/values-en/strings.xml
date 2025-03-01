@@ -1,0 +1,34 @@
+<resources>
+    <string name="goodMorning">Good Morning!</string>
+    <string name="goodAfternoon">Good Afternoon!</string>
+    <string name="goodEvening">Good Evening!</string>
+    <string name="selectLanguage">Select Language</string>
+    <string-array name="daysOfWeekNames">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
+    <string-array name="monthNames">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+    <string name="home">Home</string>
+    <string name="plans">Plans</string>
+    <string name="updates">Updates</string>
+    <string name="media">Media</string>
+    <string name="fmmpFull">Free Methodist Missions Philippines</string>
+</resources>
