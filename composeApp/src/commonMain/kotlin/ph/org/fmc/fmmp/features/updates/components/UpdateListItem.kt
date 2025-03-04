@@ -27,9 +27,11 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.format.MonthNames
 import org.jetbrains.compose.resources.stringArrayResource
 import ph.org.fmc.fmmp.domain.models.NewsUpdate
 import ph.org.fmc.fmmp.features.common.icons.Favorite
+import ph.org.fmc.fmmp.getPlatform
 import ph.org.fmc.fmmp.resources.Res
 import ph.org.fmc.fmmp.resources.monthNames
 
@@ -41,7 +43,11 @@ fun UpdateListItem(
     isOpened: Boolean = false,
     isSelected: Boolean = false,
 ) {
-    val monthNames = stringArrayResource(Res.array.monthNames)
+    val monthNames = if (getPlatform().name.startsWith("Web")) {
+        MonthNames.ENGLISH_FULL.names
+    } else {
+        stringArrayResource(Res.array.monthNames)
+    }
 
     Card(
         modifier = modifier

@@ -9,6 +9,7 @@ import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,13 +22,19 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun <T> SplitViewLayout(
+    navigator: ThreePaneScaffoldNavigator<T> = rememberListDetailPaneScaffoldNavigator<T>(),
     items: List<T>,
     topPadding: Boolean = true,
     horizontalPadding: Boolean = true,
     itemContent: @Composable (item: T, onClick: (T) -> Unit) -> Unit,
-    detailContent: @Composable (item: T, isExpanded: Boolean, onBackClick: () -> Unit) -> Unit
+    detailContent: @Composable (
+        item: T,
+        isExpanded: Boolean,
+        onBackClick: () -> Unit,
+        onPreviousClick: () -> Unit,
+        onNextClick: () -> Unit
+    ) -> Unit
 ) {
-    val navigator = rememberListDetailPaneScaffoldNavigator<T>()
     val scope = rememberCoroutineScope()
     val isExpanded = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.EXPANDED
 
@@ -69,12 +76,29 @@ fun <T> SplitViewLayout(
                     navigator.currentDestination?.contentKey?.let { item ->
                         detailContent(
                             item,
-                            isExpanded
-                        ) {
-                            scope.launch {
-                                navigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                            isExpanded,
+                            {
+                                scope.launch {
+                                    navigator.navigateTo(ListDetailPaneScaffoldRole.List)
+                                }
+                            },
+                            {
+                                val index = items.indexOf(item)
+                                if (index > 0) {
+                                    scope.launch {
+                                        navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, items[index - 1])
+                                    }
+                                }
+                            },
+                            {
+                                val index = items.indexOf(item)
+                                if (index < items.size - 1) {
+                                    scope.launch {
+                                        navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, items[index + 1])
+                                    }
+                                }
                             }
-                        }
+                        )
                     }
                 }
             }

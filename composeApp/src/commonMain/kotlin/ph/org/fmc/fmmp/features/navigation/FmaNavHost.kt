@@ -20,16 +20,16 @@ fun FmaNavHost(
     val navController = appState.navController
     NavHost(navController = navController, startDestination = TopLevelScreens.Home.destination) {
         composable<HomeScreenDestination> {
-            HomeScreen(appState::navigate, appState::navigateUp)
+            HomeScreen()
         }
         composable<UpdatesScreenDestination> {
-            UpdatesScreen(appState::navigate, appState::navigateUp)
+            UpdatesScreen()
         }
         composable<PlansScreenDestination> {
-            PlansScreen(appState::navigate, appState::navigateUp)
+            PlansScreen()
         }
         composable<MediaScreenDestination> {
-            MediaScreen(appState::navigate, appState::navigateUp)
+            MediaScreen()
         }
     }
 }

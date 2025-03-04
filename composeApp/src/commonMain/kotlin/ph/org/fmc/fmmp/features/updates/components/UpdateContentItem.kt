@@ -28,15 +28,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
-import com.mikepenz.markdown.compose.Markdown
+import kotlinx.datetime.format.MonthNames
 import org.jetbrains.compose.resources.stringArrayResource
 import ph.org.fmc.fmmp.domain.models.NewsUpdate
 import ph.org.fmc.fmmp.features.common.components.StickyHeader
 import ph.org.fmc.fmmp.features.common.icons.Favorite
-import ph.org.fmc.fmmp.features.common.theme.getMarkdownColors
-import ph.org.fmc.fmmp.features.common.theme.getMarkdownTypography
 import ph.org.fmc.fmmp.features.common.verticalScrollAndDrag
+import ph.org.fmc.fmmp.getPlatform
 import ph.org.fmc.fmmp.resources.Res
 import ph.org.fmc.fmmp.resources.monthNames
 
@@ -45,9 +43,15 @@ fun UpdateContentItem(
     newsUpdate: NewsUpdate,
     isExpanded: Boolean,
     onBackClick: () -> Unit,
+    onPreviousClick: () -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val monthNames = stringArrayResource(Res.array.monthNames)
+    val monthNames = if (getPlatform().name.startsWith("Web")) {
+        MonthNames.ENGLISH_FULL.names
+    } else {
+        stringArrayResource(Res.array.monthNames)
+    }
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
     var headerPadding by remember { mutableStateOf(0.dp) }
@@ -72,12 +76,7 @@ fun UpdateContentItem(
                     .padding(top = headerPadding)
             ) {
                 // Content below header
-                Markdown(
-                    content = newsUpdate.content,
-                    colors = getMarkdownColors(),
-                    typography = getMarkdownTypography(),
-                    imageTransformer = Coil3ImageTransformerImpl
-                )
+                ContentMarkdown(newsUpdate.content)
 
                 Row(modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 8.dp)) {
                     AuthorImage(
@@ -121,7 +120,7 @@ fun UpdateContentItem(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = onPreviousClick,
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.surfaceBright
@@ -133,7 +132,7 @@ fun UpdateContentItem(
                         )
                     }
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = onNextClick,
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.surfaceBright

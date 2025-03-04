@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlinParcelize)
 }
 
 kotlin {
@@ -25,7 +26,7 @@ kotlin {
     
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "fmmp-mobilization"
+        outputModuleName = "fmmp-mobilization"
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
@@ -126,6 +127,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.runtime.android)
     debugImplementation(compose.uiTooling)
 }
 

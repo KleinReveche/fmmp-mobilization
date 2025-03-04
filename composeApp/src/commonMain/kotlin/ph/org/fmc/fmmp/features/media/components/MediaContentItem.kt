@@ -17,8 +17,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import kotlinx.coroutines.launch
 import ph.org.fmc.fmmp.domain.models.MediaInfo
 import ph.org.fmc.fmmp.domain.models.MediaType
 import ph.org.fmc.fmmp.features.common.components.StickyHeader
@@ -56,16 +58,18 @@ fun MediaContentItem(
                     .padding(20.dp)
                     .padding(top = if (isExpanded) 0.dp else headerPadding)
             ) {
+                val uriHandler = LocalUriHandler.current
                 when (mediaInfo.mediaType){
                     MediaType.YOUTUBE -> {
                         MediaCardYoutube(
                             mediaInfo = mediaInfo
                         ) {
-                            if (getPlatform().name == "Android") {
-                                openUri(mediaInfo.mediaUrl, MediaType.YOUTUBE)
-                            } else {
-                                //TODO
-                                openUri(mediaInfo.mediaUrl, MediaType.YOUTUBE)
+                            scope.launch {
+                                if (getPlatform().name == "Android") {
+                                    openUri(mediaInfo.mediaUrl, MediaType.YOUTUBE)
+                                } else {
+                                    uriHandler.openUri(mediaInfo.mediaUrl)
+                                }
                             }
                         }
                     }
