@@ -28,11 +28,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
+import com.mikepenz.markdown.compose.Markdown
 import kotlinx.datetime.format.MonthNames
 import org.jetbrains.compose.resources.stringArrayResource
 import ph.org.fmc.fmmp.domain.models.NewsUpdate
 import ph.org.fmc.fmmp.features.common.components.StickyHeader
 import ph.org.fmc.fmmp.features.common.icons.Favorite
+import ph.org.fmc.fmmp.features.common.theme.getMarkdownColors
+import ph.org.fmc.fmmp.features.common.theme.getMarkdownTypography
 import ph.org.fmc.fmmp.features.common.verticalScrollAndDrag
 import ph.org.fmc.fmmp.getPlatform
 import ph.org.fmc.fmmp.resources.Res
@@ -76,7 +80,12 @@ fun UpdateContentItem(
                     .padding(top = headerPadding)
             ) {
                 // Content below header
-                ContentMarkdown(newsUpdate.content)
+                Markdown(
+                    content = newsUpdate.content,
+                    colors = getMarkdownColors(),
+                    typography = getMarkdownTypography(),
+                    imageTransformer = Coil3ImageTransformerImpl
+                )
 
                 Row(modifier = Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 8.dp)) {
                     AuthorImage(

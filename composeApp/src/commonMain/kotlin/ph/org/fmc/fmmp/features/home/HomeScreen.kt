@@ -2,30 +2,109 @@ package ph.org.fmc.fmmp.features.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.window.core.layout.WindowWidthSizeClass
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
+import ph.org.fmc.fmmp.domain.models.BibleBook
 import ph.org.fmc.fmmp.features.common.components.ComingSoon
+import ph.org.fmc.fmmp.features.common.icons.Bible
+import ph.org.fmc.fmmp.features.common.verticalScrollAndDrag
+import ph.org.fmc.fmmp.features.home.components.HomeTopAppBar
+import ph.org.fmc.fmmp.features.home.components.carousel.Carousel
+import ph.org.fmc.fmmp.features.home.components.carousel.CarouselSection
+import ph.org.fmc.fmmp.features.home.components.modal.VerseOfTheDay
+import ph.org.fmc.fmmp.features.home.components.modal.VerseOfTheDayModal
 import ph.org.fmc.fmmp.features.navigation.ScreenDestination
+import ph.org.fmc.fmmp.resources.Res
+import ph.org.fmc.fmmp.resources.devoOfTheDay
+import ph.org.fmc.fmmp.resources.insights
+import ph.org.fmc.fmmp.resources.verseOfTheDay
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun HomeScreen() {
     val vm: HomeScreenViewModel = viewModel { HomeScreenViewModel() }
-
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        ComingSoon(
-            featureDetails = listOf(
-                "Daily Verse",
-                "Highlights",
-                "And More!"
-            )
+    val isExpanded = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.COMPACT
+    val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+    val sections = arrayOf(
+        CarouselSection(
+            title = stringResource(Res.string.verseOfTheDay),
+            icon = Bible,
+            color = MaterialTheme.colorScheme.primaryContainer,
+            currentImageUrl = Res.getUri("drawable/1Chr16_34-full.png")
+        ),
+        CarouselSection(
+            title = stringResource(Res.string.insights),
+            icon = Icons.Default.Star,
+            color = MaterialTheme.colorScheme.secondaryContainer,
+            currentImageUrl = Res.getUri("drawable/1Chr16_34-full.png")
+        ),
+        CarouselSection(
+            title = stringResource(Res.string.devoOfTheDay),
+            icon = Icons.Default.Favorite,
+            color = MaterialTheme.colorScheme.tertiaryContainer,
+            currentImageUrl = Res.getUri("drawable/1Chr16_34-full.png")
         )
+    )
+    val verseOfTheDay = VerseOfTheDay(
+        bibleBook = BibleBook.FirstChronicles,
+        startingChapter = 16,
+        endingChapter = 16,
+        startingVerse = 34,
+        endingVerse = 34,
+        translation = "NIV",
+        verseText = "Give thanks to the Lord, for he is good;\n    his love endures forever.",
+        fullSizeImageUrl = Res.getUri("drawable/1Chr16_34-full.png"),
+        smallSizeImageUrl = Res.getUri("drawable/1Chr16_34-small.png")
+    )
+
+    Scaffold(
+        topBar = {
+            HomeTopAppBar()
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .verticalScrollAndDrag(scrollState, scope = scope)
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            Carousel(sections) {
+                when (it) {
+                    sections[0] -> vm.verseOfTheDayModal = true
+                    sections[1] -> vm.insightsModal = true
+                    sections[2] -> vm.devoOfTheDayModal = true
+                }
+            }
+
+            ComingSoon(
+                featureDetails = listOf(
+                    "Daily Verse",
+                    "Highlights",
+                    "And More!"
+                )
+            )
+        }
+
+        if (vm.verseOfTheDayModal) VerseOfTheDayModal(isExpanded, verseOfTheDay ) {
+            vm.verseOfTheDayModal = false
+        }
     }
 }
 
 @Serializable
 object HomeScreenDestination : ScreenDestination
-

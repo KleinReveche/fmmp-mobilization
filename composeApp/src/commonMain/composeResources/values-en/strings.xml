@@ -31,4 +31,7 @@
     <string name="updates">Updates</string>
     <string name="media">Media</string>
     <string name="fmmpFull">Free Methodist Missions Philippines</string>
+    <string name="verseOfTheDay">Verse of the Day</string>
+    <string name="insights">Insights</string>
+    <string name="devoOfTheDay">Devotion of the Day</string>
 </resources>

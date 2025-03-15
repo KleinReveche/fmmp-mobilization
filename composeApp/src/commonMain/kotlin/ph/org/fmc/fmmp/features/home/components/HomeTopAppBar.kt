@@ -15,6 +15,7 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
+import ph.org.fmc.fmmp.getPlatform
 import ph.org.fmc.fmmp.resources.Res
 import ph.org.fmc.fmmp.resources.daysOfWeekNames
 import ph.org.fmc.fmmp.resources.goodAfternoon
@@ -31,8 +32,10 @@ fun HomeTopAppBar() {
         in 12..17 -> Res.string.goodAfternoon
         else -> Res.string.goodEvening
     }
-    val dayOfWeekNames = stringArrayResource(Res.array.daysOfWeekNames)
-    val monthNames = stringArrayResource(Res.array.monthNames)
+    val (dayOfWeekNames, monthNames) = when (getPlatform().name.startsWith("Web")) {
+        true -> Pair(DayOfWeekNames.ENGLISH_FULL.names, MonthNames.ENGLISH_FULL.names)
+        false -> Pair(stringArrayResource(Res.array.daysOfWeekNames), stringArrayResource(Res.array.monthNames))
+    }
     val format = LocalDateTime.Format {
         dayOfWeek(DayOfWeekNames(dayOfWeekNames))
         chars(", ")

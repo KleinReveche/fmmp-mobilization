@@ -14,7 +14,7 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
-            freeCompilerArgs.addAll("-P", "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=ph.org.fmc.fmmp.data.FmaParcelize")
+            freeCompilerArgs.addAll("-P", "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=com.revechelizarondo.battleship.core.data.BattleshipParcelable")
         }
     }
     
