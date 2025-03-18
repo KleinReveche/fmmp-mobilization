@@ -5,8 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,8 +24,6 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -41,7 +37,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,6 +64,8 @@ import ph.org.fmc.fmmp.core.ui.resources.settings
 import ph.org.fmc.fmmp.core.ui.resources.tutorialsAndFaqs
 import ph.org.fmc.fmmp.core.ui.theme.LocalDebug
 import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
+import ph.org.fmc.fmmp.features.settings.components.CategoryRow
+import ph.org.fmc.fmmp.features.settings.components.MenuItemRow
 import kotlin.math.abs
 
 private const val modalWidth = 210
@@ -218,55 +215,5 @@ fun MainActionsMenu(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun MenuItemRow(
-    icon: ImageVector,
-    title: String,
-    onClick: () -> Unit,
-    isLastItem: Boolean = false
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(16.dp, 5.dp, 16.dp, if (isLastItem) 0.dp else 5.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.outline,
-            modifier = Modifier.size(22.dp)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = title,
-            color = MaterialTheme.colorScheme.outline,
-            fontSize = 16.sp
-        )
-    }
-}
-
-@Composable
-fun CategoryRow(title: String) {
-    Row(
-        modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Text(
-            text = title,
-            color = Color(0xFF64748B),
-            fontSize = 12.sp,
-        )
-
-        HorizontalDivider(
-            color = Color(0xFF334155),
-            thickness = 1.dp,
-            modifier = Modifier.padding(end = 10.dp, start = 5.dp, top = 2.dp, bottom = 2.dp)
-        )
     }
 }
