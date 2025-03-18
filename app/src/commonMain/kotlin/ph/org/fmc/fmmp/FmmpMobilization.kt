@@ -1,30 +1,55 @@
 package ph.org.fmc.fmmp
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import ph.org.fmc.fmmp.components.AppBottomNav
 import ph.org.fmc.fmmp.core.ui.theme.AppTheme
+import ph.org.fmc.fmmp.features.settings.MainActionsMenu
 import ph.org.fmc.fmmp.navigation.FmaNavHost
 
 @Composable
 internal fun FmmpMobilization() = AppTheme {
     val appState = rememberAppState()
-    val currentTopLevelScreen = appState.currentTopLevelScreen
+    val currentTopLevelScreen = appState.selectedTopLevelScreen
+    val buildConfig by remember { mutableStateOf(BuildConfig) }
 
-    Scaffold(
-        bottomBar = {
-            AppBottomNav(
-                selectedItem = currentTopLevelScreen,
-                setSelectedItem = { appState.navigateToTopLevelScreen(it) }
-            )
+    Box {
+        Scaffold(
+            bottomBar = {
+                AppBottomNav(
+                    selectedItem = currentTopLevelScreen,
+                    setSelectedItem = { appState.navigateToTopLevelScreen(it) }
+                )
+            }
+        ) {
+            Surface(modifier = Modifier.fillMaxSize().padding(it)) {
+                FmaNavHost(appState)
+            }
         }
-    ) {
-        Surface(modifier = Modifier.fillMaxSize().padding(it)) {
-            FmaNavHost(appState)
+
+        if (appState.isMainActionsMenuOpen) {
+            MainActionsMenu(
+                closePopup = { appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen },
+                navigateToPrayers = {
+                    appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
+                },
+                navigateToSettings = {
+                    appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
+                },
+                navigateToHelp = {},
+                currentUser = appState.currentUser,
+                currentAppVersion = buildConfig.APP_VERSION,
+                pgcFacebookPage = Constants.PGC_FB_PAGE,
+                fmmpFacebookPage = Constants.FMMP_FB_PAGE
+            )
         }
     }
 }

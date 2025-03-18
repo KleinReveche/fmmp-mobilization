@@ -20,7 +20,9 @@ fun FmaNavHost(
     val navController = appState.navController
     NavHost(navController = navController, startDestination = TopLevelScreens.Home.destination) {
         composable<HomeScreenDestination> {
-            HomeScreen()
+            HomeScreen {
+                appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
+            }
         }
         composable<UpdatesScreenDestination> {
             UpdatesScreen()

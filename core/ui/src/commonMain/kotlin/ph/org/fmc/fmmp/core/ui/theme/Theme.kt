@@ -89,39 +89,49 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = SurfaceContainerHighestDark,
 )
 
-val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
-val LocalThemeIsDynamicColorAndroid = compositionLocalOf { mutableStateOf(false) }
-val LocalThemeIsOled = compositionLocalOf { mutableStateOf(false) }
+data class Theme(
+    val isDark: Boolean,
+    val isDynamicColorAndroid: Boolean,
+    val isOled: Boolean
+)
+
+val LocalTheme = compositionLocalOf {
+    mutableStateOf(
+        Theme(
+            isDark = false,
+            isDynamicColorAndroid = false,
+            isOled = false
+        )
+    )
+}
+
+val LocalDebug = compositionLocalOf { mutableStateOf(false) }
 
 @Composable
 fun AppTheme(
     content: @Composable () -> Unit
 ) {
     val systemIsDark = isSystemInDarkTheme()
-    val isDarkState = remember(systemIsDark) { mutableStateOf(systemIsDark) }
-    val isDynamicColorAndroidState = remember(false) { mutableStateOf(false) }
-    val isOledState = remember(false) { mutableStateOf(false) }
+    val theme = remember(false) { mutableStateOf(Theme(systemIsDark, false, false)) }
+    val debugState = remember(false) { mutableStateOf(false) }
 
     CompositionLocalProvider(
-        LocalThemeIsDark provides isDarkState,
-        LocalThemeIsDynamicColorAndroid provides isDynamicColorAndroidState,
-        LocalThemeIsOled provides isOledState
+        LocalTheme provides theme,
+        LocalDebug provides debugState
     ) {
-        val isDark by isDarkState
-        val isDynamicColorAndroid by isDynamicColorAndroidState
-        val isOled by isOledState
+        val appTheme by theme
 
         val colorScheme = AppColorScheme(
-            isDark,
-            isDynamicColorAndroid,
+            appTheme.isDark,
+            appTheme.isDynamicColorAndroid,
             LightColorScheme,
             DarkColorScheme.copy(
-                background = if (isOled) ScrimDark else BackgroundDark,
-                surface = if (isOled) ScrimDark else SurfaceDark
+                background = if (appTheme.isOled) ScrimDark else BackgroundDark,
+                surface = if (appTheme.isOled) ScrimDark else SurfaceDark
             )
         )
 
-        SystemAppearance(!isDark)
+        SystemAppearance(!appTheme.isDark)
         MaterialTheme(
             colorScheme = colorScheme,
             content = { Surface(content = content) }

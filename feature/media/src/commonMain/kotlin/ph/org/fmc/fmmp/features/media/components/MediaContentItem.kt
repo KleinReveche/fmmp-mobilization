@@ -21,10 +21,8 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import kotlinx.coroutines.launch
-import ph.org.fmc.fmmp.core.data.getPlatform
 import ph.org.fmc.fmmp.core.domain.models.MediaInfo
 import ph.org.fmc.fmmp.core.domain.models.MediaType
-import ph.org.fmc.fmmp.core.domain.models.Platforms
 import ph.org.fmc.fmmp.core.ui.components.StickyHeader
 import ph.org.fmc.fmmp.core.ui.platform.openUri
 import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
@@ -66,13 +64,13 @@ fun MediaContentItem(
                             mediaInfo = mediaInfo
                         ) {
                             scope.launch {
-                                if (getPlatform().name == Platforms.Android) {
-                                    openUri(mediaInfo.mediaUrl, MediaType.YOUTUBE)
-                                } else {
-                                    uriHandler.openUri(mediaInfo.mediaUrl)
-                                }
+                                openUri(mediaInfo.mediaUrl, MediaType.YOUTUBE, uriHandler)
                             }
                         }
+                    }
+
+                    MediaType.FACEBOOK -> {
+
                     }
                 }
             }

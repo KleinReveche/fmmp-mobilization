@@ -12,10 +12,10 @@ import kotlinx.coroutines.launch
 
 fun Modifier.verticalScrollAndDrag(
     scrollState: ScrollState,
+    scope: CoroutineScope,
     enabled: Boolean = true,
     flingBehavior: FlingBehavior? = null,
     reverseScrolling: Boolean = false,
-    scope: CoroutineScope,
 ) = this.then(
     verticalScroll(
         state = scrollState,

@@ -2,6 +2,15 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import java.io.FileInputStream
+import java.util.Properties
+
+val versionProperties = Properties().apply { load(FileInputStream("$rootDir/versions.properties")) }
+val versionMajor = versionProperties.getProperty("versionMajor").toInt()
+val versionMinor = versionProperties.getProperty("versionMinor").toInt()
+val versionPatch = versionProperties.getProperty("versionPatch").toInt()
+val appVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
+val appVersionName = "$versionMajor.$versionMinor.$versionPatch"
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -50,6 +59,7 @@ kotlin {
             implementation(projects.feature.media)
             implementation(projects.feature.plans)
             implementation(projects.feature.updates)
+            implementation(projects.feature.settings)
 
             implementation(libs.bundles.kotlin)
         }
@@ -65,8 +75,8 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
 
         applicationId = "ph.org.fmc.fmmp"
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
     }
     packaging {
         resources {
@@ -106,6 +116,8 @@ compose.desktop {
             macOS {
                 iconFile.set(project.file("icommonMain/cons/fmmp.icns"))
                 bundleID = "ph.org.fmc.fmmp.desktopApp"
+                dmgPackageVersion =
+                    if (versionMajor > 0) appVersionName else "1.${appVersionName.removePrefix("0.")}"
             }
         }
     }
@@ -120,4 +132,13 @@ composeCompiler {
 buildConfig {
     // BuildConfig configuration here.
     // https://github.com/gmazzo/gradle-buildconfig-plugin#usage-in-kts
+    packageName("ph.org.fmc.fmmp")
+    useKotlinOutput { internalVisibility = false }
+
+    buildConfigField<String>("APP_VERSION", appVersionName)
+
+    forClass(packageName = "ph.org.fmc.fmmp", className = "Constants") {
+        buildConfigField<String>("PGC_FB_PAGE", "https://www.facebook.com/pgcfmcofficial")
+        buildConfigField<String>("FMMP_FB_PAGE", "https://www.facebook.com/FMMPOfficial")
+    }
 }

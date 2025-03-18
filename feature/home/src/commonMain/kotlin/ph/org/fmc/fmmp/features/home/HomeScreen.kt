@@ -26,6 +26,7 @@ import ph.org.fmc.fmmp.core.ui.resources.Res
 import ph.org.fmc.fmmp.core.ui.resources.devoOfTheDay
 import ph.org.fmc.fmmp.core.ui.resources.insights
 import ph.org.fmc.fmmp.core.ui.resources.verseOfTheDay
+import ph.org.fmc.fmmp.core.ui.theme.LocalDebug
 import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
 import ph.org.fmc.fmmp.features.home.components.HomeTopAppBar
 import ph.org.fmc.fmmp.features.home.components.carousel.Carousel
@@ -35,7 +36,7 @@ import ph.org.fmc.fmmp.features.home.components.modal.VerseOfTheDayModal
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(showAppDrawer: () -> Unit = {}) {
     val vm: HomeScreenViewModel = viewModel { HomeScreenViewModel() }
     val isExpanded = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.COMPACT
     val scrollState = rememberScrollState()
@@ -74,7 +75,7 @@ fun HomeScreen() {
 
     Scaffold(
         topBar = {
-            HomeTopAppBar()
+            HomeTopAppBar(showAppDrawer)
         }
     ) { paddingValues ->
         Column(
@@ -91,13 +92,15 @@ fun HomeScreen() {
                 }
             }
 
-            ComingSoon(
-                featureDetails = listOf(
-                    "Daily Verse",
-                    "Highlights",
-                    "And More!"
+            if (!LocalDebug.current.value) {
+                ComingSoon(
+                    featureDetails = listOf(
+                        "Daily Verse",
+                        "Highlights",
+                        "And More!"
+                    )
                 )
-            )
+            }
         }
 
         if (vm.verseOfTheDayModal) VerseOfTheDayModal(isExpanded, verseOfTheDay ) {

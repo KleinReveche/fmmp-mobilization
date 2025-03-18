@@ -1,7 +1,11 @@
 package ph.org.fmc.fmmp.features.home.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -26,7 +30,7 @@ import ph.org.fmc.fmmp.core.ui.resources.monthNames
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopAppBar() {
+fun HomeTopAppBar(showAppDrawer: () -> Unit = {}) {
     val date = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
     val greeting = when (date.hour) {
         in 0..11 -> Res.string.goodMorning
@@ -52,5 +56,13 @@ fun HomeTopAppBar() {
                 Text(text = format.format(date), style = MaterialTheme.typography.bodyMedium)
             }
         },
+        actions = {
+            IconButton(onClick = showAppDrawer) {
+                Icon(
+                    imageVector = Icons.Outlined.AccountCircle,
+                    contentDescription = "Open App Drawer"
+                )
+            }
+        }
     )
 }

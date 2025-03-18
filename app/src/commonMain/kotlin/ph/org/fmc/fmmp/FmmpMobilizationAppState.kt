@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
+import ph.org.fmc.fmmp.core.domain.models.User
 import ph.org.fmc.fmmp.core.ui.ScreenDestination
 import ph.org.fmc.fmmp.navigation.TopLevelScreens
 
@@ -27,8 +28,8 @@ fun rememberAppState(
     ) {
         FmmpMobilizationAppState(
             navController = navController,
-            coroutineScope = coroutineScope,
-            snackbarHostState = snackbarHostState
+            scope = coroutineScope,
+            snackbarState = snackbarHostState
         )
     }
 }
@@ -36,35 +37,41 @@ fun rememberAppState(
 @Stable
 class FmmpMobilizationAppState(
     val navController: NavHostController,
-    coroutineScope: CoroutineScope,
-    val snackbarHostState: SnackbarHostState,
-    val topBar: @Composable (() -> Unit)? = null,
-    val bottomBar: @Composable (() -> Unit)? = null,
+    scope: CoroutineScope,
+    val snackbarState: SnackbarHostState
 ) {
-    val screens = TopLevelScreens.entries
-    var currentTopLevelScreen by mutableStateOf(TopLevelScreens.Home)
+    val topLevelScreens = TopLevelScreens.entries
+    var selectedTopLevelScreen by mutableStateOf(TopLevelScreens.Home)
+    var isMainActionsMenuOpen by mutableStateOf(false)
+    var currentUser by mutableStateOf<User>(
+        User(
+            name = "Juan Dela Cruz",
+            email = "juandelacruz@gmail.com",
+            profilePictureUrl = "https://randomuser.me/api/portraits/lego/5.jpg"
+        )
+    )
 
     fun navigateUp() {
         val currentDestination = navController.currentBackStackEntry
-        if (screens.any { it.destination::class.qualifiedName == currentDestination?.destination?.route }) {
+        if (topLevelScreens.any { it.destination::class.qualifiedName == currentDestination?.destination?.route }) {
             navigateToTopLevelScreen(TopLevelScreens.Home)
         } else {
             navController.navigateUp()
         }
     }
 
-    fun navigate(screen: ScreenDestination, isTopLevel: Boolean = false) {
-        if (isTopLevel) {
-            navigateToTopLevelScreen(screens.find { it.destination == screen }
+    fun navigate(destination: ScreenDestination, isTopLevelDestination: Boolean = false) {
+        if (isTopLevelDestination) {
+            navigateToTopLevelScreen(topLevelScreens.find { it.destination == destination }
                 ?: TopLevelScreens.Home)
         } else {
-            navController.navigate(screen)
+            navController.navigate(destination)
         }
     }
 
-    fun navigateToTopLevelScreen(screen: TopLevelScreens) {
-        currentTopLevelScreen = screen
-        navController.navigate(screen.destination) {
+    fun navigateToTopLevelScreen(destination: TopLevelScreens) {
+        selectedTopLevelScreen = destination
+        navController.navigate(destination.destination) {
             popUpTo(TopLevelScreens.Home.destination)
             launchSingleTop = true
         }
