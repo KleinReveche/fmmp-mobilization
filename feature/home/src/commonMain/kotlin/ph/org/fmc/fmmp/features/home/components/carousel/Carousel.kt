@@ -4,8 +4,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -37,10 +37,10 @@ fun Carousel(sections: Array<CarouselSection> = emptyArray(), onClick: (Carousel
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.size(width = 800.dp, height = 540.dp)) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
                 .pointerInput(Unit) {
                     detectDragGestures(
                         onDragEnd = {
@@ -60,9 +60,7 @@ fun Carousel(sections: Array<CarouselSection> = emptyArray(), onClick: (Carousel
             CarouselCard(
                 pagerState = pagerState,
                 currentPage = page,
-                title = section.title,
-                icon = section.icon,
-                color = section.color,
+                imageUrl = section.currentImageUrl,
                 onClick = { onClick(section) }
             )
         }

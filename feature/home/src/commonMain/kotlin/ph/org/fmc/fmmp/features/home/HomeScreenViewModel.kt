@@ -22,7 +22,7 @@ class HomeScreenViewModel : ViewModel() {
                endingChapter = 16,
                startingVerse = 34,
                endingVerse = 34,
-               translation = "NIV",
+               translationAbbrev = "NIV",
                verseText = "Give thanks to the Lord, for he is good;\n    his love endures forever.",
                fullSizeImageUrl = Res.getUri("drawable/1Chr16_34-full.png"),
                smallSizeImageUrl = Res.getUri("drawable/1Chr16_34-small.png")

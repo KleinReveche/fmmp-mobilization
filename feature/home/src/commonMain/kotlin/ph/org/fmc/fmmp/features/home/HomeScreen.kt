@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.PsychologyAlt
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -26,8 +27,10 @@ import ph.org.fmc.fmmp.core.ui.ScreenDestination
 import ph.org.fmc.fmmp.core.ui.components.ComingSoon
 import ph.org.fmc.fmmp.core.ui.icons.Bible
 import ph.org.fmc.fmmp.core.ui.resources.Res
+import ph.org.fmc.fmmp.core.ui.resources.devo
 import ph.org.fmc.fmmp.core.ui.resources.devoOfTheDay
 import ph.org.fmc.fmmp.core.ui.resources.insights
+import ph.org.fmc.fmmp.core.ui.resources.verse
 import ph.org.fmc.fmmp.core.ui.resources.verseOfTheDay
 import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
 import ph.org.fmc.fmmp.features.home.components.HomeTopAppBar
@@ -45,19 +48,19 @@ fun HomeScreen(showAppDrawer: () -> Unit = {}) {
     val scope = rememberCoroutineScope()
     val sections = arrayOf(
         CarouselSection(
-            title = stringResource(Res.string.verseOfTheDay),
+            title = stringResource(if (isExpanded) Res.string.verseOfTheDay else Res.string.verse),
             icon = Bible,
             color = MaterialTheme.colorScheme.primaryContainer,
             currentImageUrl = Res.getUri("drawable/1Chr16_34-full.png")
         ),
         CarouselSection(
             title = stringResource(Res.string.insights),
-            icon = Icons.Default.Star,
+            icon = Icons.Default.PsychologyAlt,
             color = MaterialTheme.colorScheme.secondaryContainer,
             currentImageUrl = Res.getUri("drawable/1Chr16_34-full.png")
         ),
         CarouselSection(
-            title = stringResource(Res.string.devoOfTheDay),
+            title = stringResource(if (isExpanded) Res.string.devoOfTheDay else Res.string.devo),
             icon = Icons.Default.Favorite,
             color = MaterialTheme.colorScheme.tertiaryContainer,
             currentImageUrl = Res.getUri("drawable/1Chr16_34-full.png")
@@ -69,7 +72,7 @@ fun HomeScreen(showAppDrawer: () -> Unit = {}) {
         endingChapter = 16,
         startingVerse = 34,
         endingVerse = 34,
-        translation = "NIV",
+        translationAbbrev = "NIV",
         verseText = "Give thanks to the Lord, for he is good;\n    his love endures forever.",
         fullSizeImageUrl = Res.getUri("drawable/1Chr16_34-full.png"),
         smallSizeImageUrl = Res.getUri("drawable/1Chr16_34-small.png")
@@ -80,7 +83,8 @@ fun HomeScreen(showAppDrawer: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .verticalScrollAndDrag(scrollState, scope = scope)
-            .fillMaxSize()
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Carousel(sections) {
             when (it) {

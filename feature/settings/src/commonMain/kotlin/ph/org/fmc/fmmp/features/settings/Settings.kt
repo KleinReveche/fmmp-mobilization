@@ -1,7 +1,6 @@
 package ph.org.fmc.fmmp.features.settings
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,30 +9,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.AlignHorizontalLeft
 import androidx.compose.material.icons.automirrored.outlined.Help
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DisplaySettings
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.ImagesearchRoller
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +35,7 @@ import org.jetbrains.compose.resources.stringResource
 import ph.org.fmc.fmmp.core.domain.models.User
 import ph.org.fmc.fmmp.core.ui.LocalBibleDisplaySettings
 import ph.org.fmc.fmmp.core.ui.LocalTheme
+import ph.org.fmc.fmmp.core.ui.components.PopupCard
 import ph.org.fmc.fmmp.core.ui.icons.Bible
 import ph.org.fmc.fmmp.core.ui.resources.Res
 import ph.org.fmc.fmmp.core.ui.resources.accountCategoryDescription
@@ -51,7 +43,6 @@ import ph.org.fmc.fmmp.core.ui.resources.bibleCategory
 import ph.org.fmc.fmmp.core.ui.resources.bibleCategoryDescription
 import ph.org.fmc.fmmp.core.ui.resources.bibleChapterVerseNumbers
 import ph.org.fmc.fmmp.core.ui.resources.bibleVerseLine
-import ph.org.fmc.fmmp.core.ui.resources.close
 import ph.org.fmc.fmmp.core.ui.resources.darkMode
 import ph.org.fmc.fmmp.core.ui.resources.generalCategory
 import ph.org.fmc.fmmp.core.ui.resources.generalCategoryDescription
@@ -62,7 +53,6 @@ import ph.org.fmc.fmmp.core.ui.resources.oledMode
 import ph.org.fmc.fmmp.core.ui.resources.redLetter
 import ph.org.fmc.fmmp.core.ui.resources.settings
 import ph.org.fmc.fmmp.core.ui.resources.tutorialsAndFaqs
-import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
 import ph.org.fmc.fmmp.features.settings.components.SettingsCategoryContent
 import ph.org.fmc.fmmp.features.settings.components.SettingsNavigationItem
 import ph.org.fmc.fmmp.features.settings.components.SettingsSwitchItem
@@ -81,155 +71,125 @@ fun Settings(
 ) {
     var theme by LocalTheme.current
     var bibleVerseDisplaySettings by LocalBibleDisplaySettings.current
-
-    val scope = rememberCoroutineScope()
-    val scrollState = rememberScrollState()
     val fillMaxWidthFraction = if (isPopup) 0.5F else 1F
 
-    Card(
-        modifier = Modifier.wrapContentSize(),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(fillMaxWidthFraction)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = if (isPopup) Arrangement.Start else Arrangement.Center
-        ) {
-            if (isPopup) {
-                IconButton(onClick = settingsData.closeSettings) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(Res.string.close)
+    PopupCard(stringResource(Res.string.settings), isPopup, settingsData.closeSettings) {
+        SettingCategory(
+            icon = Icons.Default.AccountCircle,
+            title = settingsData.user.email,
+            description = stringResource(Res.string.accountCategoryDescription),
+            fillMaxWidthFraction = fillMaxWidthFraction
+        )
+
+        SettingsCategoryContent(
+            fillMaxWidthFraction,
+            arrayOf(
+                {
+                    SettingsNavigationItem(
+                        icon = Icons.Default.AccountCircle,
+                        title = stringResource(Res.string.manageAccount),
+                        onClick = settingsData.navigateToManageAccount
                     )
                 }
-                Spacer(Modifier.width(16.dp))
-            }
-            Text(text = stringResource(Res.string.settings))
-        }
-
-        Column(
-            modifier = Modifier.verticalScrollAndDrag(scrollState, scope)
-        ) {
-            SettingCategory(
-                icon = Icons.Default.AccountCircle,
-                title = settingsData.user.email,
-                description = stringResource(Res.string.accountCategoryDescription),
-                fillMaxWidthFraction = fillMaxWidthFraction
             )
+        )
 
-            SettingsCategoryContent(
-                fillMaxWidthFraction,
-                arrayOf(
-                    {
-                        SettingsNavigationItem(
-                            icon = Icons.Default.AccountCircle,
-                            title = stringResource(Res.string.manageAccount),
-                            onClick = settingsData.navigateToManageAccount
-                        )
-                    }
-                )
-            )
+        SettingCategory(
+            icon = Icons.Default.Phone,
+            title = stringResource(Res.string.generalCategory),
+            description = stringResource(Res.string.generalCategoryDescription),
+            fillMaxWidthFraction = fillMaxWidthFraction
+        )
 
-            SettingCategory(
-                icon = Icons.Default.Phone,
-                title = stringResource(Res.string.generalCategory),
-                description = stringResource(Res.string.generalCategoryDescription),
-                fillMaxWidthFraction = fillMaxWidthFraction
+        SettingsCategoryContent(
+            fillMaxWidthFraction,
+            arrayOf(
+                {
+                    SettingsSwitchItem(
+                        icon = Icons.Default.DarkMode,
+                        title = stringResource(Res.string.darkMode),
+                        checked = theme.isDark,
+                        onCheckedChange = { theme = theme.copy(isDark = it) }
+                    )
+                },
+                {
+                    SettingsSwitchItem(
+                        icon = Icons.Default.DisplaySettings,
+                        title = stringResource(Res.string.oledMode),
+                        checked = theme.isOled,
+                        onCheckedChange = { theme = theme.copy(isOled = it) },
+                        isLastItem = true
+                    )
+                }
             )
+        )
 
-            SettingsCategoryContent(
-                fillMaxWidthFraction,
-                arrayOf(
-                    {
-                        SettingsSwitchItem(
-                            icon = Icons.Default.DarkMode,
-                            title = stringResource(Res.string.darkMode),
-                            checked = theme.isDark,
-                            onCheckedChange = { theme = theme.copy(isDark = it) }
-                        )
-                    },
-                    {
-                        SettingsSwitchItem(
-                            icon = Icons.Default.DisplaySettings,
-                            title = stringResource(Res.string.oledMode),
-                            checked = theme.isOled,
-                            onCheckedChange = { theme = theme.copy(isOled = it) },
-                            isLastItem = true
-                        )
-                    }
-                )
-            )
+        SettingCategory(
+            icon = Bible,
+            title = stringResource(Res.string.bibleCategory),
+            description = stringResource(Res.string.bibleCategoryDescription),
+            fillMaxWidthFraction = fillMaxWidthFraction
+        )
 
-            SettingCategory(
-                icon = Bible,
-                title = stringResource(Res.string.bibleCategory),
-                description = stringResource(Res.string.bibleCategoryDescription),
-                fillMaxWidthFraction = fillMaxWidthFraction
+        SettingsCategoryContent(
+            fillMaxWidthFraction,
+            arrayOf(
+                {
+                    SettingsSwitchItem(
+                        icon = Icons.Default.ImagesearchRoller,
+                        title = stringResource(Res.string.redLetter),
+                        checked = bibleVerseDisplaySettings.redLetter,
+                        onCheckedChange = {
+                            bibleVerseDisplaySettings =
+                                bibleVerseDisplaySettings.copy(redLetter = it)
+                        }
+                    )
+                },
+                {
+                    SettingsSwitchItem(
+                        icon = Icons.AutoMirrored.Filled.AlignHorizontalLeft,
+                        title = stringResource(Res.string.bibleVerseLine),
+                        checked = bibleVerseDisplaySettings.verseLine,
+                        onCheckedChange = {
+                            bibleVerseDisplaySettings =
+                                bibleVerseDisplaySettings.copy(verseLine = it)
+                        }
+                    )
+                },
+                {
+                    SettingsSwitchItem(
+                        icon = Icons.Default.FormatListNumbered,
+                        title = stringResource(Res.string.bibleChapterVerseNumbers),
+                        checked = bibleVerseDisplaySettings.chapterVerseNumbers,
+                        onCheckedChange = {
+                            bibleVerseDisplaySettings =
+                                bibleVerseDisplaySettings.copy(chapterVerseNumbers = it)
+                        },
+                        isLastItem = true
+                    )
+                }
             )
+        )
 
-            SettingsCategoryContent(
-                fillMaxWidthFraction,
-                arrayOf(
-                    {
-                        SettingsSwitchItem(
-                            icon = Icons.Default.ImagesearchRoller,
-                            title = stringResource(Res.string.redLetter),
-                            checked = bibleVerseDisplaySettings.redLetter,
-                            onCheckedChange = {
-                                bibleVerseDisplaySettings =
-                                    bibleVerseDisplaySettings.copy(redLetter = it)
-                            }
-                        )
-                    },
-                    {
-                        SettingsSwitchItem(
-                            icon = Icons.AutoMirrored.Filled.AlignHorizontalLeft,
-                            title = stringResource(Res.string.bibleVerseLine),
-                            checked = bibleVerseDisplaySettings.verseLine,
-                            onCheckedChange = {
-                                bibleVerseDisplaySettings =
-                                    bibleVerseDisplaySettings.copy(verseLine = it)
-                            }
-                        )
-                    },
-                    {
-                        SettingsSwitchItem(
-                            icon = Icons.Default.FormatListNumbered,
-                            title = stringResource(Res.string.bibleChapterVerseNumbers),
-                            checked = bibleVerseDisplaySettings.chapterVerseNumbers,
-                            onCheckedChange = {
-                                bibleVerseDisplaySettings =
-                                    bibleVerseDisplaySettings.copy(chapterVerseNumbers = it)
-                            },
-                            isLastItem = true
-                        )
-                    }
-                )
-            )
+        SettingCategory(
+            icon = Icons.AutoMirrored.Outlined.Help,
+            title = stringResource(Res.string.help),
+            description = stringResource(Res.string.helpCategoryDescription),
+            fillMaxWidthFraction = fillMaxWidthFraction
+        )
 
-            SettingCategory(
-                icon = Icons.AutoMirrored.Outlined.Help,
-                title = stringResource(Res.string.help),
-                description = stringResource(Res.string.helpCategoryDescription),
-                fillMaxWidthFraction = fillMaxWidthFraction
+        SettingsCategoryContent(
+            fillMaxWidthFraction,
+            arrayOf(
+                {
+                    SettingsNavigationItem(
+                        icon = Icons.Outlined.Info,
+                        title = stringResource(Res.string.tutorialsAndFaqs),
+                        onClick = settingsData.navigateToTutorialsAndFaqs
+                    )
+                }
             )
-
-            SettingsCategoryContent(
-                fillMaxWidthFraction,
-                arrayOf(
-                    {
-                        SettingsNavigationItem(
-                            icon = Icons.Outlined.Info,
-                            title = stringResource(Res.string.tutorialsAndFaqs),
-                            onClick = settingsData.navigateToTutorialsAndFaqs
-                        )
-                    }
-                )
-            )
-        }
+        )
     }
 }
 

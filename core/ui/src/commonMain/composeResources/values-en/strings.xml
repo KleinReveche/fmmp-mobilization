@@ -33,8 +33,10 @@
     <string name="fmmpFull">Free Methodist Missions Philippines</string>
     <string name="pgcFull">Philippine General Conference</string>
     <string name="verseOfTheDay">Verse of the Day</string>
+    <string name="verse">Verse</string>
     <string name="insights">Insights</string>
     <string name="devoOfTheDay">Devotion of the Day</string>
+    <string name="devo">Devo</string>
     <string name="prayers">Prayers</string>
     <string name="settings">Settings</string>
     <string name="tutorialsAndFaqs">Tutorials &amp; FAQs</string>

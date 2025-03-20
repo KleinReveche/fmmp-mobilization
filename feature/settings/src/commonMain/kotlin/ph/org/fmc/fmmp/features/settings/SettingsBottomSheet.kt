@@ -3,6 +3,7 @@ package ph.org.fmc.fmmp.features.settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -10,7 +11,8 @@ import androidx.compose.runtime.Composable
 fun SettingsBottomSheet(settingsData: SettingsData) {
     ModalBottomSheet(
         onDismissRequest = settingsData.closeSettings,
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ) {
         Settings(settingsData, false)
     }
