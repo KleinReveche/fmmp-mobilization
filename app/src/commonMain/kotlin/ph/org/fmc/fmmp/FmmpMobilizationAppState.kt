@@ -37,7 +37,7 @@ fun rememberAppState(
 @Stable
 class FmmpMobilizationAppState(
     val navController: NavHostController,
-    scope: CoroutineScope,
+    val scope: CoroutineScope,
     val snackbarState: SnackbarHostState
 ) {
     val topLevelScreens = TopLevelScreens.entries

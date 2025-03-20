@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowWidthSizeClass
+import kotlinx.coroutines.launch
 import ph.org.fmc.fmmp.components.AppBottomNav
 import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.theme.AppTheme
@@ -49,12 +50,16 @@ internal fun FmmpMobilization() = AppTheme {
                 closePopup = { appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen },
                 navigateToPrayers = {
                     appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
+                    showFeatureNotAvailable(appState)
                 },
                 navigateToSettings = {
                     appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
                     appState.isSettingsMenuOpen = !appState.isSettingsMenuOpen
                 },
-                navigateToHelp = {},
+                navigateToHelp = {
+                    showFeatureNotAvailable(appState)
+                    appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
+                },
                 currentUser = appState.currentUser,
                 currentAppVersion = buildConfig.APP_VERSION,
                 pgcFacebookPage = Constants.PGC_FB_PAGE,
@@ -67,8 +72,14 @@ internal fun FmmpMobilization() = AppTheme {
             closeSettings = {
                 appState.isSettingsMenuOpen = !appState.isSettingsMenuOpen
             },
-            navigateToManageAccount = {},
-            navigateToTutorialsAndFaqs = {}
+            navigateToManageAccount = {
+                showFeatureNotAvailable(appState)
+                appState.isSettingsMenuOpen = !appState.isSettingsMenuOpen
+            },
+            navigateToTutorialsAndFaqs = {
+                showFeatureNotAvailable(appState)
+                appState.isSettingsMenuOpen = !appState.isSettingsMenuOpen
+            }
         )
 
         if (appState.isSettingsMenuOpen) {
@@ -77,5 +88,14 @@ internal fun FmmpMobilization() = AppTheme {
             else
                 SettingsPopup(settingsData)
         }
+    }
+}
+
+private fun showFeatureNotAvailable(appState: FmmpMobilizationAppState) {
+    appState.scope.launch {
+        appState.snackbarState.showSnackbar(
+            message = "Feature not yet available",
+            actionLabel = "OK"
+        )
     }
 }
