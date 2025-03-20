@@ -19,6 +19,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import ph.org.fmc.fmmp.core.domain.models.BibleBook
+import ph.org.fmc.fmmp.core.ui.LocalDebug
 import ph.org.fmc.fmmp.core.ui.ScreenDestination
 import ph.org.fmc.fmmp.core.ui.components.ComingSoon
 import ph.org.fmc.fmmp.core.ui.icons.Bible
@@ -26,7 +27,6 @@ import ph.org.fmc.fmmp.core.ui.resources.Res
 import ph.org.fmc.fmmp.core.ui.resources.devoOfTheDay
 import ph.org.fmc.fmmp.core.ui.resources.insights
 import ph.org.fmc.fmmp.core.ui.resources.verseOfTheDay
-import ph.org.fmc.fmmp.core.ui.theme.LocalDebug
 import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
 import ph.org.fmc.fmmp.features.home.components.HomeTopAppBar
 import ph.org.fmc.fmmp.features.home.components.carousel.Carousel

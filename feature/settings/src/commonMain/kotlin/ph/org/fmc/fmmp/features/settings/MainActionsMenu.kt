@@ -23,7 +23,6 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,6 +49,7 @@ import org.jetbrains.compose.resources.stringResource
 import ph.org.fmc.fmmp.core.domain.models.MediaType
 import ph.org.fmc.fmmp.core.domain.models.User
 import ph.org.fmc.fmmp.core.ui.CustomDialogPosition
+import ph.org.fmc.fmmp.core.ui.LocalDebug
 import ph.org.fmc.fmmp.core.ui.customDialogModifier
 import ph.org.fmc.fmmp.core.ui.icons.FmcLogo
 import ph.org.fmc.fmmp.core.ui.icons.FoldedHands
@@ -62,7 +62,6 @@ import ph.org.fmc.fmmp.core.ui.resources.pgcFull
 import ph.org.fmc.fmmp.core.ui.resources.prayers
 import ph.org.fmc.fmmp.core.ui.resources.settings
 import ph.org.fmc.fmmp.core.ui.resources.tutorialsAndFaqs
-import ph.org.fmc.fmmp.core.ui.theme.LocalDebug
 import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
 import ph.org.fmc.fmmp.features.settings.components.CategoryRow
 import ph.org.fmc.fmmp.features.settings.components.MenuItemRow
@@ -71,7 +70,6 @@ import kotlin.math.abs
 private const val modalWidth = 210
 private const val profileOffset = -40
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainActionsMenu(
     closePopup: () -> Unit,
@@ -170,7 +168,7 @@ fun MainActionsMenu(
                             title = stringResource(Res.string.settings),
                             onClick = navigateToSettings
                         )
-                        CategoryRow(stringResource(Res.string.help))
+                        CategoryRow(stringResource(Res.string.help).uppercase())
 
                         MenuItemRow(
                             icon = Icons.AutoMirrored.Outlined.Help,
@@ -178,7 +176,7 @@ fun MainActionsMenu(
                             onClick = navigateToHelp
                         )
 
-                        CategoryRow(stringResource(Res.string.about))
+                        CategoryRow(stringResource(Res.string.about).uppercase())
 
                         MenuItemRow(
                             icon = Icons.Outlined.Info,

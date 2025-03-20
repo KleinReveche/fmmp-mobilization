@@ -43,6 +43,7 @@ class FmmpMobilizationAppState(
     val topLevelScreens = TopLevelScreens.entries
     var selectedTopLevelScreen by mutableStateOf(TopLevelScreens.Home)
     var isMainActionsMenuOpen by mutableStateOf(false)
+    var isSettingsMenuOpen by mutableStateOf(false)
     var currentUser by mutableStateOf<User>(
         User(
             name = "Juan Dela Cruz",

@@ -8,10 +8,14 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import ph.org.fmc.fmmp.core.ui.BibleVerseDisplaySettings
+import ph.org.fmc.fmmp.core.ui.LocalBibleDisplaySettings
+import ph.org.fmc.fmmp.core.ui.LocalDebug
+import ph.org.fmc.fmmp.core.ui.LocalTheme
+import ph.org.fmc.fmmp.core.ui.Theme
 
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryLight,
@@ -89,35 +93,27 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = SurfaceContainerHighestDark,
 )
 
-data class Theme(
-    val isDark: Boolean,
-    val isDynamicColorAndroid: Boolean,
-    val isOled: Boolean
-)
-
-val LocalTheme = compositionLocalOf {
-    mutableStateOf(
-        Theme(
-            isDark = false,
-            isDynamicColorAndroid = false,
-            isOled = false
-        )
-    )
-}
-
-val LocalDebug = compositionLocalOf { mutableStateOf(false) }
-
 @Composable
 fun AppTheme(
     content: @Composable () -> Unit
 ) {
     val systemIsDark = isSystemInDarkTheme()
-    val theme = remember(false) { mutableStateOf(Theme(systemIsDark, false, false)) }
+    val theme = remember(false) {
+        mutableStateOf(
+            Theme(
+                systemIsDark,
+                isDynamicColorAndroid = false,
+                isOled = false
+            )
+        )
+    }
     val debugState = remember(false) { mutableStateOf(false) }
+    val bibleVerseDisplaySettings = remember(false) { mutableStateOf(BibleVerseDisplaySettings()) }
 
     CompositionLocalProvider(
         LocalTheme provides theme,
-        LocalDebug provides debugState
+        LocalDebug provides debugState,
+        LocalBibleDisplaySettings provides bibleVerseDisplaySettings
     ) {
         val appTheme by theme
 
