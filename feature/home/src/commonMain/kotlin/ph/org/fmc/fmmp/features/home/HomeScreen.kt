@@ -2,16 +2,16 @@ package ph.org.fmc.fmmp.features.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -19,7 +19,9 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import ph.org.fmc.fmmp.core.domain.models.BibleBook
+import ph.org.fmc.fmmp.core.ui.AppTopBar
 import ph.org.fmc.fmmp.core.ui.LocalDebug
+import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.ScreenDestination
 import ph.org.fmc.fmmp.core.ui.components.ComingSoon
 import ph.org.fmc.fmmp.core.ui.icons.Bible
@@ -72,41 +74,35 @@ fun HomeScreen(showAppDrawer: () -> Unit = {}) {
         fullSizeImageUrl = Res.getUri("drawable/1Chr16_34-full.png"),
         smallSizeImageUrl = Res.getUri("drawable/1Chr16_34-small.png")
     )
+    var topBar by LocalTopBar.current
 
-    Scaffold(
-        topBar = {
-            HomeTopAppBar(showAppDrawer)
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .verticalScrollAndDrag(scrollState, scope = scope)
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            Carousel(sections) {
-                when (it) {
-                    sections[0] -> vm.verseOfTheDayModal = true
-                    sections[1] -> vm.insightsModal = true
-                    sections[2] -> vm.devoOfTheDayModal = true
-                }
+    topBar = AppTopBar { HomeTopAppBar(showAppDrawer) }
+    Column(
+        modifier = Modifier
+            .verticalScrollAndDrag(scrollState, scope = scope)
+            .fillMaxSize()
+    ) {
+        Carousel(sections) {
+            when (it) {
+                sections[0] -> vm.verseOfTheDayModal = true
+                sections[1] -> vm.insightsModal = true
+                sections[2] -> vm.devoOfTheDayModal = true
             }
+        }
 
-            if (!LocalDebug.current.value) {
-                ComingSoon(
-                    featureDetails = listOf(
-                        "Daily Verse",
-                        "Highlights",
-                        "And More!"
-                    )
+        if (!LocalDebug.current.value) {
+            ComingSoon(
+                featureDetails = listOf(
+                    "Daily Verse",
+                    "Highlights",
+                    "And More!"
                 )
-            }
-        }
-
-        if (vm.verseOfTheDayModal) VerseOfTheDayModal(isExpanded, verseOfTheDay ) {
-            vm.verseOfTheDayModal = false
+            )
         }
     }
+
+    if (vm.verseOfTheDayModal)
+        VerseOfTheDayModal(isExpanded, verseOfTheDay, onDismiss = { vm.verseOfTheDayModal = false })
 }
 
 @Serializable

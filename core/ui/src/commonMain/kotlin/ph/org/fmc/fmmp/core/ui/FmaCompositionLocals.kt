@@ -1,5 +1,6 @@
 package ph.org.fmc.fmmp.core.ui
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 
@@ -15,6 +16,11 @@ data class BibleVerseDisplaySettings(
     val chapterVerseNumbers: Boolean = true
 )
 
+data class AppTopBar(
+    val topBar: @Composable () -> Unit
+)
+
 val LocalTheme = compositionLocalOf { mutableStateOf(Theme()) }
 val LocalBibleDisplaySettings = compositionLocalOf { mutableStateOf(BibleVerseDisplaySettings()) }
 val LocalDebug = compositionLocalOf { mutableStateOf(false) }
+val LocalTopBar = compositionLocalOf { mutableStateOf(AppTopBar { }) }

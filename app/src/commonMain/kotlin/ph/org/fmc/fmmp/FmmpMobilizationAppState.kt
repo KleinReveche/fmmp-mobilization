@@ -44,7 +44,7 @@ class FmmpMobilizationAppState(
     var selectedTopLevelScreen by mutableStateOf(TopLevelScreens.Home)
     var isMainActionsMenuOpen by mutableStateOf(false)
     var isSettingsMenuOpen by mutableStateOf(false)
-    var currentUser by mutableStateOf<User>(
+    var currentUser by mutableStateOf(
         User(
             name = "Juan Dela Cruz",
             email = "juandelacruz@gmail.com",

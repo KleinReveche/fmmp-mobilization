@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowWidthSizeClass
 import ph.org.fmc.fmmp.components.AppBottomNav
+import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.theme.AppTheme
 import ph.org.fmc.fmmp.features.settings.MainActionsMenu
 import ph.org.fmc.fmmp.features.settings.SettingsBottomSheet
@@ -28,6 +30,8 @@ internal fun FmmpMobilization() = AppTheme {
 
     Box {
         Scaffold(
+            snackbarHost = { SnackbarHost(appState.snackbarState) },
+            topBar = LocalTopBar.current.value.topBar,
             bottomBar = {
                 AppBottomNav(
                     selectedItem = currentTopLevelScreen,

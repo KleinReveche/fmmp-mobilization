@@ -10,6 +10,8 @@ import androidx.compose.runtime.setValue
 import kotlinx.serialization.Serializable
 import ph.org.fmc.fmmp.core.data.getSampleMediaList
 import ph.org.fmc.fmmp.core.domain.models.MediaInfo
+import ph.org.fmc.fmmp.core.ui.AppTopBar
+import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.ScreenDestination
 import ph.org.fmc.fmmp.core.ui.layout.SplitViewLayout
 import ph.org.fmc.fmmp.features.media.components.MediaContentItem
@@ -19,6 +21,8 @@ import ph.org.fmc.fmmp.features.media.components.MediaListItem
 @Composable
 fun MediaScreen() {
     var mediaList by remember { mutableStateOf(emptyList<MediaInfo>()) }
+    var topBar by LocalTopBar.current
+    topBar = AppTopBar { }
 
     LaunchedEffect(Unit) {
         mediaList = getSampleMediaList()

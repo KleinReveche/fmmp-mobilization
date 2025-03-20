@@ -10,6 +10,8 @@ import androidx.compose.runtime.setValue
 import kotlinx.serialization.Serializable
 import ph.org.fmc.fmmp.core.data.getSampleUpdatesList
 import ph.org.fmc.fmmp.core.domain.models.NewsUpdate
+import ph.org.fmc.fmmp.core.ui.AppTopBar
+import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.ScreenDestination
 import ph.org.fmc.fmmp.core.ui.layout.SplitViewLayout
 import ph.org.fmc.fmmp.features.updates.components.UpdateContentItem
@@ -19,6 +21,8 @@ import ph.org.fmc.fmmp.features.updates.components.UpdateListItem
 @Composable
 fun UpdatesScreen() {
     var sampleUpdates by remember { mutableStateOf(emptyList<NewsUpdate>()) }
+    var topBar by LocalTopBar.current
+    topBar = AppTopBar { }
 
     LaunchedEffect(Unit) {
         sampleUpdates = getSampleUpdatesList()

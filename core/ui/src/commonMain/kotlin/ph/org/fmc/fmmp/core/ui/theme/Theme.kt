@@ -11,10 +11,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import ph.org.fmc.fmmp.core.ui.AppTopBar
 import ph.org.fmc.fmmp.core.ui.BibleVerseDisplaySettings
 import ph.org.fmc.fmmp.core.ui.LocalBibleDisplaySettings
 import ph.org.fmc.fmmp.core.ui.LocalDebug
 import ph.org.fmc.fmmp.core.ui.LocalTheme
+import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.Theme
 
 private val LightColorScheme = lightColorScheme(
@@ -109,11 +111,13 @@ fun AppTheme(
     }
     val debugState = remember(false) { mutableStateOf(false) }
     val bibleVerseDisplaySettings = remember(false) { mutableStateOf(BibleVerseDisplaySettings()) }
+    val topBar = remember(false) { mutableStateOf(AppTopBar { }) }
 
     CompositionLocalProvider(
         LocalTheme provides theme,
         LocalDebug provides debugState,
-        LocalBibleDisplaySettings provides bibleVerseDisplaySettings
+        LocalBibleDisplaySettings provides bibleVerseDisplaySettings,
+        LocalTopBar provides topBar
     ) {
         val appTheme by theme
 
