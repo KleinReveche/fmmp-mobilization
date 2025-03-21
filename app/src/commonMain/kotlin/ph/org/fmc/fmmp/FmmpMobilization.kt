@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowWidthSizeClass
 import kotlinx.coroutines.launch
 import ph.org.fmc.fmmp.components.AppBottomNav
+import ph.org.fmc.fmmp.core.data.getPlatform
 import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.theme.AppTheme
 import ph.org.fmc.fmmp.features.settings.MainActionsMenu
@@ -59,6 +60,16 @@ internal fun FmmpMobilization() = AppTheme {
                 navigateToHelp = {
                     showFeatureNotAvailable(appState)
                     appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
+                },
+                showSnackbarDebug = {
+                    appState.isMainActionsMenuOpen = !appState.isMainActionsMenuOpen
+                    appState.scope.launch {
+                        val platform = getPlatform()
+                        appState.snackbarState.showSnackbar(
+                            message = "Debug mode enabled in ${platform.name} ${platform.version}",
+                            actionLabel = "OK"
+                        )
+                    }
                 },
                 currentUser = appState.currentUser,
                 currentAppVersion = buildConfig.APP_VERSION,

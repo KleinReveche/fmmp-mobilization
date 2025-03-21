@@ -76,6 +76,7 @@ fun MainActionsMenu(
     navigateToPrayers: () -> Unit,
     navigateToSettings: () -> Unit,
     navigateToHelp: () -> Unit,
+    showSnackbarDebug: () -> Unit,
     currentUser: User,
     currentAppVersion: String,
     pgcFacebookPage: String,
@@ -206,6 +207,7 @@ fun MainActionsMenu(
                                 if (versionTapCount == 7) {
                                     versionTapCount = 0
                                     isDebugModeEnabled = !isDebugModeEnabled
+                                    showSnackbarDebug()
                                 }
                             }
                         )
