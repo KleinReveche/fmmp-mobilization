@@ -50,6 +50,7 @@
     <string name="generalCategoryDescription">Customize your experience</string>
     <string name="darkMode">Dark Mode</string>
     <string name="oledMode">OLED Mode</string>
+    <string name="dynamicTheme">Dynamic Theme</string>
     <string name="bibleCategory">Bible</string>
     <string name="bibleCategoryDescription">Customize your how Bible verses are displayed</string>
     <string name="redLetter">Red letter for the words of Christ</string>

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DisplaySettings
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.ImagesearchRoller
+import androidx.compose.material.icons.filled.InvertColors
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
@@ -32,6 +33,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import ph.org.fmc.fmmp.core.data.getPlatform
+import ph.org.fmc.fmmp.core.domain.models.Platforms
 import ph.org.fmc.fmmp.core.domain.models.User
 import ph.org.fmc.fmmp.core.ui.LocalBibleDisplaySettings
 import ph.org.fmc.fmmp.core.ui.LocalTheme
@@ -44,6 +47,7 @@ import ph.org.fmc.fmmp.core.ui.resources.bibleCategoryDescription
 import ph.org.fmc.fmmp.core.ui.resources.bibleChapterVerseNumbers
 import ph.org.fmc.fmmp.core.ui.resources.bibleVerseLine
 import ph.org.fmc.fmmp.core.ui.resources.darkMode
+import ph.org.fmc.fmmp.core.ui.resources.dynamicTheme
 import ph.org.fmc.fmmp.core.ui.resources.generalCategory
 import ph.org.fmc.fmmp.core.ui.resources.generalCategoryDescription
 import ph.org.fmc.fmmp.core.ui.resources.help
@@ -72,6 +76,9 @@ fun Settings(
     var theme by LocalTheme.current
     var bibleVerseDisplaySettings by LocalBibleDisplaySettings.current
     val fillMaxWidthFraction = if (isPopup) 0.5F else 1F
+    val platform = getPlatform()
+    val isAndroidDynamicThemeCompatible = platform.name == Platforms.Android
+            && platform.version.substringAfter("(").substringBefore(")").toInt() >= 31
 
     PopupCard(stringResource(Res.string.settings), isPopup, settingsData.closeSettings) {
         SettingCategory(
@@ -118,8 +125,21 @@ fun Settings(
                         title = stringResource(Res.string.oledMode),
                         checked = theme.isOled,
                         onCheckedChange = { theme = theme.copy(isOled = it) },
-                        isLastItem = true
+                        isLastItem = !isAndroidDynamicThemeCompatible
                     )
+                },
+                if (isAndroidDynamicThemeCompatible) {
+                    {
+                        SettingsSwitchItem(
+                            icon = Icons.Default.InvertColors,
+                            title = stringResource(Res.string.dynamicTheme),
+                            checked = theme.isDynamicColorAndroid,
+                            onCheckedChange = { theme = theme.copy(isDynamicColorAndroid = it) },
+                            isLastItem = true
+                        )
+                    }
+                } else {
+                    null
                 }
             )
         )
