@@ -1,7 +1,6 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class FeatureModuleConventionPlugin : Plugin<Project> {
@@ -15,11 +14,9 @@ class FeatureModuleConventionPlugin : Plugin<Project> {
         plugins.apply(libs.findPlugin("kotlinx.serialization").get().get().pluginId)
 
         extensions.configure<KotlinMultiplatformExtension> {
-            androidTarget {
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.JVM_17)
-                }
-            }
+            jvmToolchain(17)
+
+            androidTarget()
 
             sourceSets.configureEach {
                 when (name) {

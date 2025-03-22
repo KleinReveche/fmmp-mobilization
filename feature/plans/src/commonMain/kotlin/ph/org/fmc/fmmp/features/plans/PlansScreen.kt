@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ph.org.fmc.fmmp.core.ui.AppTopBar
 import ph.org.fmc.fmmp.core.ui.LocalTopBar
@@ -31,4 +32,5 @@ fun PlansScreen() {
 }
 
 @Serializable
+@SerialName("plans")
 object PlansScreenDestination : ScreenDestination

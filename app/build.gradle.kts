@@ -1,6 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import java.io.FileInputStream
 import java.util.Properties
@@ -19,14 +19,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.buildConfig)
+    alias(libs.plugins.compose.hotReload)
 }
 
 kotlin {
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
+    jvmToolchain(17)
+
+    androidTarget()
 
     jvm()
 
@@ -62,6 +61,8 @@ kotlin {
             implementation(projects.feature.settings)
 
             implementation(libs.bundles.kotlin)
+
+            implementation(libs.kermit)
         }
     }
 }
@@ -114,7 +115,7 @@ compose.desktop {
                 iconFile.set(project.file("commonMain/icons/fmmp.ico"))
             }
             macOS {
-                iconFile.set(project.file("icommonMain/cons/fmmp.icns"))
+                iconFile.set(project.file("commonMain/cons/fmmp.icns"))
                 bundleID = "ph.org.fmc.fmmp.desktopApp"
                 dmgPackageVersion =
                     if (versionMajor > 0) appVersionName else "1.${appVersionName.removePrefix("0.")}"
@@ -127,6 +128,7 @@ compose.desktop {
 composeCompiler {
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
     metricsDestination = layout.buildDirectory.dir("compose_compiler")
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
 
 buildConfig {

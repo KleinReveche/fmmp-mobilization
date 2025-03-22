@@ -34,4 +34,6 @@ fun FmaNavHost(
             MediaScreen()
         }
     }
+
+    appState.appLoading = false
 }

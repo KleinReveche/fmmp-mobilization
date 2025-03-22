@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.kotlinx.serialization).apply(false)
     alias(libs.plugins.kotlin.parcelize).apply(false)
     alias(libs.plugins.buildConfig).apply(false)
+    alias(libs.plugins.compose.hotReload).apply(false)
 }

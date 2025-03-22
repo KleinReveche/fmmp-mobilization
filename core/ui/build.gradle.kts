@@ -46,6 +46,8 @@ kotlin {
             api(libs.markdown.coil3)
 
             api(libs.kotlinx.datetime)
+
+            api(libs.kermit)
         }
 
         jvmMain.dependencies {

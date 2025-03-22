@@ -25,9 +25,8 @@ import ph.org.fmc.fmmp.features.settings.SettingsPopup
 import ph.org.fmc.fmmp.navigation.FmaNavHost
 
 @Composable
-internal fun FmmpMobilization() = AppTheme {
-    val appState = rememberAppState()
-    val currentTopLevelScreen = appState.selectedTopLevelScreen
+internal fun FmmpMobilization(appState: FmmpMobilizationAppState = rememberAppState()) = AppTheme {
+    val currentTopLevelScreen = appState.selectedTopLevelScreen()
     val buildConfig by remember { mutableStateOf(BuildConfig) }
 
     Box {

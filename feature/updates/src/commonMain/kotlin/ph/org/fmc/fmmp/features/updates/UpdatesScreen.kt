@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ph.org.fmc.fmmp.core.data.getSampleUpdatesList
 import ph.org.fmc.fmmp.core.domain.models.NewsUpdate
@@ -50,4 +51,5 @@ fun UpdatesScreen() {
 }
 
 @Serializable
+@SerialName("updates")
 object UpdatesScreenDestination : ScreenDestination

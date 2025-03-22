@@ -13,6 +13,10 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import ph.org.fmc.fmmp.core.domain.models.User
 import ph.org.fmc.fmmp.core.ui.ScreenDestination
+import ph.org.fmc.fmmp.features.home.HomeScreenDestination
+import ph.org.fmc.fmmp.features.media.MediaScreenDestination
+import ph.org.fmc.fmmp.features.plans.PlansScreenDestination
+import ph.org.fmc.fmmp.features.updates.UpdatesScreenDestination
 import ph.org.fmc.fmmp.navigation.TopLevelScreens
 
 @Composable
@@ -22,14 +26,10 @@ fun rememberAppState(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ): FmmpMobilizationAppState {
     return remember(
-        navController,
-        coroutineScope,
-        snackbarHostState
+        navController, coroutineScope, snackbarHostState
     ) {
         FmmpMobilizationAppState(
-            navController = navController,
-            scope = coroutineScope,
-            snackbarState = snackbarHostState
+            navController = navController, scope = coroutineScope, snackbarState = snackbarHostState
         )
     }
 }
@@ -40,8 +40,8 @@ class FmmpMobilizationAppState(
     val scope: CoroutineScope,
     val snackbarState: SnackbarHostState
 ) {
+    var appLoading by mutableStateOf(true)
     val topLevelScreens = TopLevelScreens.entries
-    var selectedTopLevelScreen by mutableStateOf(TopLevelScreens.Home)
     var isMainActionsMenuOpen by mutableStateOf(false)
     var isSettingsMenuOpen by mutableStateOf(false)
     var currentUser by mutableStateOf(
@@ -71,10 +71,24 @@ class FmmpMobilizationAppState(
     }
 
     fun navigateToTopLevelScreen(destination: TopLevelScreens) {
-        selectedTopLevelScreen = destination
         navController.navigate(destination.destination) {
             popUpTo(TopLevelScreens.Home.destination)
             launchSingleTop = true
         }
+    }
+
+    fun navigateToTopLevelScreen(route: ScreenDestination) {
+        navController.navigate(route) {
+            popUpTo(TopLevelScreens.Home.destination)
+            launchSingleTop = true
+        }
+    }
+
+    fun selectedTopLevelScreen() = when (navController.currentDestination?.route) {
+        HomeScreenDestination.serializer().descriptor.serialName -> TopLevelScreens.Home
+        UpdatesScreenDestination.serializer().descriptor.serialName -> TopLevelScreens.Updates
+        PlansScreenDestination.serializer().descriptor.serialName -> TopLevelScreens.Plans
+        MediaScreenDestination.serializer().descriptor.serialName -> TopLevelScreens.Media
+        else -> TopLevelScreens.Home
     }
 }

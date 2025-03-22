@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.window.core.layout.WindowWidthSizeClass
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
@@ -110,4 +111,5 @@ fun HomeScreen(showAppDrawer: () -> Unit = {}) {
 }
 
 @Serializable
+@SerialName("home")
 object HomeScreenDestination : ScreenDestination
