@@ -29,6 +29,7 @@ import androidx.compose.ui.window.PopupProperties
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.stringResource
 import ph.org.fmc.fmmp.core.domain.models.BibleBook
+import ph.org.fmc.fmmp.core.ui.LocalGlobalPadding
 import ph.org.fmc.fmmp.core.ui.components.PopupCard
 import ph.org.fmc.fmmp.core.ui.resources.Res
 import ph.org.fmc.fmmp.core.ui.resources.verseOfTheDay
@@ -70,7 +71,10 @@ private fun ModalBottomSheet(verseOfTheDay: VerseOfTheDay, onDismiss: () -> Unit
             }
         }
     ) {
-        ModalContent(verseOfTheDay, modifier = Modifier.padding(16.dp))
+        ModalContent(
+            verseOfTheDay,
+            modifier = Modifier.padding(16.dp).padding(LocalGlobalPadding.current.value)
+        )
     }
 }
 

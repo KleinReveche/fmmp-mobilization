@@ -15,7 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.window.core.layout.WindowWidthSizeClass
 import kotlinx.coroutines.launch
 import ph.org.fmc.fmmp.components.AppBottomNav
-import ph.org.fmc.fmmp.core.data.getPlatform
+import ph.org.fmc.fmmp.core.domain.getPlatform
+import ph.org.fmc.fmmp.core.ui.LocalGlobalPadding
 import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.theme.AppTheme
 import ph.org.fmc.fmmp.features.settings.MainActionsMenu
@@ -29,7 +30,7 @@ internal fun FmmpMobilization(appState: FmmpMobilizationAppState = rememberAppSt
     val currentTopLevelScreen = appState.selectedTopLevelScreen()
     val buildConfig by remember { mutableStateOf(BuildConfig) }
 
-    Box {
+    Box(Modifier.fillMaxSize().padding(LocalGlobalPadding.current.value)) {
         Scaffold(
             snackbarHost = { SnackbarHost(appState.snackbarState) },
             topBar = LocalTopBar.current.value.topBar,

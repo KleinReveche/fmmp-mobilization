@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import ph.org.fmc.fmmp.core.ui.LocalGlobalPadding
 import ph.org.fmc.fmmp.core.ui.resources.Res
 import ph.org.fmc.fmmp.core.ui.resources.close
 import ph.org.fmc.fmmp.core.ui.verticalScrollAndDrag
@@ -41,7 +42,9 @@ fun PopupCard(
     val fillMaxWidthFraction = if (isPopup) 0.5F else 1F
 
     Box(
-        modifier = if (isPopup) Modifier.padding(24.dp, 32.dp) else Modifier,
+        modifier = (if (isPopup) Modifier.padding(24.dp, 32.dp) else Modifier).padding(
+            LocalGlobalPadding.current.value
+        ),
         contentAlignment = Alignment.Center
     ) {
         Card(

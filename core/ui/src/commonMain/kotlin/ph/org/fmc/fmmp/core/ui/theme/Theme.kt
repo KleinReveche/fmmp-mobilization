@@ -1,6 +1,7 @@
 package ph.org.fmc.fmmp.core.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -11,10 +12,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
+import ph.org.fmc.fmmp.core.domain.getPlatform
+import ph.org.fmc.fmmp.core.domain.models.Platforms
 import ph.org.fmc.fmmp.core.ui.AppTopBar
 import ph.org.fmc.fmmp.core.ui.BibleVerseDisplaySettings
 import ph.org.fmc.fmmp.core.ui.LocalBibleDisplaySettings
 import ph.org.fmc.fmmp.core.ui.LocalDebug
+import ph.org.fmc.fmmp.core.ui.LocalGlobalPadding
 import ph.org.fmc.fmmp.core.ui.LocalTheme
 import ph.org.fmc.fmmp.core.ui.LocalTopBar
 import ph.org.fmc.fmmp.core.ui.Theme
@@ -109,15 +114,30 @@ fun AppTheme(
             )
         )
     }
+    val platform = getPlatform()
+    val isWasmJsOnAndroid =
+        platform.name == Platforms.WasmJs && platform.version.contains("Android")
+    val isWasmJsOnIPhone =
+        platform.name == Platforms.WasmJs && platform.version.lowercase().contains("iphone")
     val debugState = remember(false) { mutableStateOf(false) }
     val bibleVerseDisplaySettings = remember(false) { mutableStateOf(BibleVerseDisplaySettings()) }
     val topBar = remember(false) { mutableStateOf(AppTopBar { }) }
+    val globalPadding = remember(false) {
+        mutableStateOf(
+            when {
+                isWasmJsOnAndroid -> PaddingValues(bottom = 56.dp)
+                isWasmJsOnIPhone -> PaddingValues(bottom = 20.dp)
+                else -> PaddingValues()
+            }
+        )
+    }
 
     CompositionLocalProvider(
         LocalTheme provides theme,
         LocalDebug provides debugState,
         LocalBibleDisplaySettings provides bibleVerseDisplaySettings,
-        LocalTopBar provides topBar
+        LocalTopBar provides topBar,
+        LocalGlobalPadding provides globalPadding
     ) {
         val appTheme by theme
 
