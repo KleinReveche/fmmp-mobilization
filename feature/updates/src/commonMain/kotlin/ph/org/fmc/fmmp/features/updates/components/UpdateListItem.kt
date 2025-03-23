@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.format.MonthNames
 import org.jetbrains.compose.resources.stringArrayResource
-import ph.org.fmc.fmmp.core.data.getPlatform
+import ph.org.fmc.fmmp.core.domain.getPlatform
 import ph.org.fmc.fmmp.core.domain.models.NewsUpdate
 import ph.org.fmc.fmmp.core.domain.models.Platforms
 import ph.org.fmc.fmmp.core.ui.icons.Favorite

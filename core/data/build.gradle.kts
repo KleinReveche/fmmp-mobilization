@@ -7,8 +7,5 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.domain)
         }
-        wasmJsMain.dependencies {
-            implementation(libs.kotlinx.browser)
-        }
     }
 }

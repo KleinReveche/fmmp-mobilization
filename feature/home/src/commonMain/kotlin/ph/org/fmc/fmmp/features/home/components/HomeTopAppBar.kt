@@ -19,7 +19,7 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
-import ph.org.fmc.fmmp.core.data.getPlatform
+import ph.org.fmc.fmmp.core.domain.getPlatform
 import ph.org.fmc.fmmp.core.domain.models.Platforms
 import ph.org.fmc.fmmp.core.ui.resources.Res
 import ph.org.fmc.fmmp.core.ui.resources.daysOfWeekNames

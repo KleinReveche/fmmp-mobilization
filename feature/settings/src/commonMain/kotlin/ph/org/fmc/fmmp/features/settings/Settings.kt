@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
-import ph.org.fmc.fmmp.core.data.getPlatform
+import ph.org.fmc.fmmp.core.domain.getPlatform
 import ph.org.fmc.fmmp.core.domain.models.Platforms
 import ph.org.fmc.fmmp.core.domain.models.User
 import ph.org.fmc.fmmp.core.ui.LocalBibleDisplaySettings

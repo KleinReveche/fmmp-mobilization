@@ -1,4 +1,4 @@
-package ph.org.fmc.fmmp.core.data
+package ph.org.fmc.fmmp.core.domain
 
 import kotlinx.browser.window
 import ph.org.fmc.fmmp.core.domain.models.Platforms

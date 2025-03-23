@@ -17,5 +17,9 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlinx.datetime)
         }
+
+        wasmJsMain.dependencies {
+            implementation(libs.kotlinx.browser)
+        }
     }
 }

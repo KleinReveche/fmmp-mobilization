@@ -32,7 +32,7 @@ import com.mikepenz.markdown.coil3.Coil3ImageTransformerImpl
 import com.mikepenz.markdown.compose.Markdown
 import kotlinx.datetime.format.MonthNames
 import org.jetbrains.compose.resources.stringArrayResource
-import ph.org.fmc.fmmp.core.data.getPlatform
+import ph.org.fmc.fmmp.core.domain.getPlatform
 import ph.org.fmc.fmmp.core.domain.models.NewsUpdate
 import ph.org.fmc.fmmp.core.domain.models.Platforms
 import ph.org.fmc.fmmp.core.ui.components.StickyHeader
